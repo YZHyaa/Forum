@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xusm.forum.dao.CommentDao">
+    <resultMap id="CommentMap" type="com.xusm.forum.entity.Comment">
+        <id property="id" column="id"/>
+        <result property="comCreate" column="com_create"/>
+        <result property="comContent" column="com_content"/>
+        <result property="comAuthor" column="com_author"/>
+        <result property="comAuthorName" column="com_author_name"/>
+        <result property="comCreate" column="com_create"/>
+        <result property="comLike" column="com_like"/>
+        <result property="repCount" column="rep_count"/>
+        <result property="comAuthorHead" column="head"/>
+    </resultMap>
+
+    <select id="queryCommnentList" resultMap="CommentMap">
+        SELECT c.id,c.com_author,c.com_author_name,c.com_content,c.com_create,c.com_like,c.rep_count,
+                u.head
+        FROM `comment` c LEFT JOIN user_detail u ON c.com_author = u.user_id
+        WHERE c.art_id = #{id} AND c.com_state=#{state}
+        ORDER BY com_create DESC
+    </select>
+</mapper>
