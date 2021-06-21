@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: xusm-forum
+  datasource:
+    url: jdbc:mysql://43.107.23.112:3306/forum?useUnicode=true&characterEncoding=utf8 # 172.17.0.2  47.95.245.51:3306
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+  redis:
+    host: 43.107.23.112  # 43.107.23.112  172.17.0.3  47.95.245.5
+    timeout: 5000ms
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+xusm:
+  sms:
+    accessKeyId: LTAI4Fi5Gcd5ZmMnabCoGXhb 
+    accessKeySecret: hgHiqoXMdFVUxo8M6Kttv2GdqLui
+    signName: 数模 
+    verifyCodeTemplate: SMS_179612241 
+  jwt:
+    secret: xusm@Login(Auth}*^31)&heiMa% # 登录校验的密钥
+    pubKeyPath: C:\temp\rsa\xusm\rsa.pub # 公钥地址
+    priKeyPath: C:\temp\rsa\xusm\rsa.pri # 私钥地址
+    expire: 45 # 过期时间,单位分钟
+    cookieName: XUSM_TOKEN #cookie名
+    cookieMaxAge: 45 #cookie过期时间
+  upload:
+    file-path: /root/webapp/img # /var/xusm  /root/webapp/img
+    file-url: http://bbs.xysmxh.com/image/   # http://43.107.23.112/image/  http://bbs.xysmxh.com/image/
+  origin:
+    - http://bbs.xysmxh.com
+    - http://www.bbs.xysmxh.com
+    - http://localhost:8080
+  domain: localhost # localhost  bbs.xysmxh.com

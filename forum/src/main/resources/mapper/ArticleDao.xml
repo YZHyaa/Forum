@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xusm.forum.dao.ArticleDao">
+    <resultMap id="articleMap" type="com.xusm.forum.entity.Article">
+        <id property="id" column="id"/>
+        <result property="click" column="click"/>
+        <result property="created" column="created"/>
+        <result property="title" column="title"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="sort" column="sort"/>
+        <result property="alike" column="alike"/>
+        <association property="userDetail" javaType="com.xusm.forum.entity.UserDetail">
+            <result property="username" column="username"/>
+            <result property="head" column="head"/>
+        </association>
+    </resultMap>
+
+    <select id="selectArticleList" resultMap="articleMap">
+        select id,created,title,comment_count,click,sort,alike,
+                username,head
+        FROM article a LEFT JOIN user_detail u ON a.author=u.user_id 
+        where
+          <!-- 文章状态 -->
+          state = 1
+          <!-- 文章类型 -->
+          <if test="type != 3">
+              and type=#{type}
+          </if>
+          <!-- 年份筛选 -->
+          and year(created)=#{year}
+          <!-- 搜索筛选 -->
+          <if test="key != null and key.trim()!=''">
+              and title like concat('%',#{key},'%')
+              or author in (SELECT user_id FROM user_detail WHERE username like CONCAT('%',#{key},'%') )
+          </if>
+          <!-- 排序 -->
+          ORDER BY sort DESC,
+          <if test="!ishot">
+              created DESC
+          </if>
+          <if test="ishot">
+              click DESC
+          </if >
+    </select>
+</mapper>

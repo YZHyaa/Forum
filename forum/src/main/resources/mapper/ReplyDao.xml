@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xusm.forum.dao.ReplyDao">
+    <resultMap id="ReplyMap" type="com.xusm.forum.entity.Reply">
+        <result property="repAuthor" column="rep_author"/>
+        <result property="repType" column="rep_type"/>
+        <result property="repLike" column="rep_like"/>
+        <result property="repCreate" column="rep_create"/>
+        <result property="repAuthorName" column="rep_author_name"/>
+        <result property="repContent" column="rep_content"/>
+        <result property="toRepAuthorName" column="to_rep_author_name"/>
+        <result property="toRepAuthor" column="to_rep_author"/>
+        <result property="repAuthorHead" column="head"/>
+    </resultMap>
+
+    <select id="queryReplyList" resultMap="ReplyMap">
+        SELECT rep_author,rep_author_name,rep_content,rep_create,rep_like,rep_type,
+                to_rep_author_name,to_rep_author,
+                u.head
+        FROM reply r LEFT JOIN user_detail u ON r.rep_author = u.user_id
+        WHERE comment_id=#{commentId} and rep_state=#{state}
+        ORDER BY rep_create DESC
+    </select>
+</mapper>
